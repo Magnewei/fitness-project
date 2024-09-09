@@ -1,37 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import React from 'react';
+import { Text, View } from 'react-native';
+import SignInScreen from './(tabs)/signin';
+import { clerkAPI } from '../constants/env';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function AuthGate({ children }: { children: React.ReactNode }) {
+  const { isSignedIn } = useAuth();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+  React.useEffect(() => {
+    if (!isSignedIn) {
+      <SignInScreen />;
+      // Redirect to the sign-in page if the user is not authenticated
     }
-  }, [loaded]);
+  }, [isSignedIn]);
 
-  if (!loaded) {
-    return null;
+  if (!isSignedIn) {
+    // Optionally, show a loading state or splash screen while checking auth status
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
+  return <>{children}</>;
+}
+
+export default function Layout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <ClerkProvider publishableKey={clerkAPI}>
+      <AuthGate>
+        <SignInScreen />
+      </AuthGate>
+    </ClerkProvider>
   );
 }
