@@ -1,8 +1,8 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import React from 'react';
 import { Text, View } from 'react-native';
-import SignInScreen from './(tabs)/signin';
-import { clerkAPI } from '../constants/env';
+import SignInScreen from './(auth)/signin';
+import { clerkAPI } from './constants/env';
 
 function AuthGate({ children }: { children: React.ReactNode }) {
   const { isSignedIn } = useAuth();
