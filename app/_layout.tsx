@@ -1,37 +1,59 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import React from 'react';
-import { Text, View } from 'react-native';
-import SignInScreen from './(auth)/signin';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import { useEffect } from 'react';
+import { getItemAsync, setItemAsync } from 'expo-secure-store';
 import { clerkAPI } from './constants/Api';
 
-function AuthGate({ children }: { children: React.ReactNode }) {
-  const { isSignedIn } = useAuth();
+const CLERK_PUBLISHABLE_KEY = clerkAPI;
 
-  React.useEffect(() => {
-    if (!isSignedIn) {
-      <SignInScreen />;
-      // Redirect to the sign-in page if the user is not authenticated
+const InitialLayout = () => {
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    const inTabsGroup = segments[0] === '(auth)';
+
+    console.log('User changed: ', isSignedIn);
+
+    if (isSignedIn && !inTabsGroup) {
+      console.log('her?');
+      router.replace('/home');
+    } else if (!isSignedIn) {
+      router.replace('/login');
     }
   }, [isSignedIn]);
 
-  if (!isSignedIn) {
-    // Optionally, show a loading state or splash screen while checking auth status
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  return <Slot />;
+};
 
-  return <>{children}</>;
-}
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      return getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
 
-export default function Layout() {
+const RootLayout = () => {
   return (
-    <ClerkProvider publishableKey={clerkAPI}>
-      <AuthGate>
-        <SignInScreen />
-      </AuthGate>
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      tokenCache={tokenCache}
+    >
+      <InitialLayout />
     </ClerkProvider>
   );
-}
+};
+
+export default RootLayout;
