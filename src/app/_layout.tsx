@@ -1,7 +1,7 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import { clerkAPI } from './constants/Api';
+import { clerkAPI } from '../config/API_keys';
 
 const CLERK_PUBLISHABLE_KEY = clerkAPI;
 
