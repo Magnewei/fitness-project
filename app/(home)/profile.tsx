@@ -2,23 +2,20 @@ import { useUser } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
+// Er useless
 const Profile = () => {
   const { user } = useUser();
   const [firstName, setFirstName] = useState<string | undefined>(
-    user?.firstName ?? undefined
+    user.firstName ?? undefined
   );
   const [lastName, setLastName] = useState<string | undefined>(
-    user?.lastName ?? undefined
+    user.lastName ?? undefined
   );
 
   const onSaveUser = async () => {
     try {
       // This is not working!
       if (user) {
-        const result = await user.update({
-          firstName: 'John',
-          lastName: 'Doe',
-        });
         console.log('🚀 ~ file: profile.tsx:16 ~ onSaveUser ~ result:', result);
       } else {
         console.log('User is not available');
