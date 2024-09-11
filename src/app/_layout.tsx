@@ -1,9 +1,9 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import { clerkAPI } from '../config/api_keys';
+import { CLERK_API_KEY } from '../config/api_keys';
 
-const CLERK_PUBLISHABLE_KEY = clerkAPI;
+const CLERK_PUBLISHABLE_KEY = CLERK_API_KEY;
 
 const InitialLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
