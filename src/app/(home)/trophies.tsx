@@ -19,12 +19,7 @@ const TrophyComponent = ({ trophy }: { trophy: Trophy }) => {
       <Text>{trophy.points}</Text>
       <Image
         source={trophy.icon}
-        transition={1000}
-        style={{
-          height: 50,
-          width: 50,
-          flex: 1,
-        }}
+        style={styles.image}
         onError={() => console.log('Error loading image')}
       />
     </View>
@@ -73,8 +68,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    width: '100%',
-    backgroundColor: '#0553',
+    height: 50,
+    width: 50,
   },
 });
 
