@@ -10,11 +10,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import trophyIcon from '../../assets/images/trophy_icon_gray.png';
 
-const Home = () => {
-  const { user } = useUser();
-
+const Trophies = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -56,7 +53,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Trophies;
 
 /*
 const initialQuestions = [ { id: 1, text: "What is your name?", options: ["Alice", "Bob", "Charlie", "Diana"], answer: null }, { id: 2, text: "What is your favorite color?", options: ["Red", "Blue", "Green", "Yellow"], answer: null }, 
