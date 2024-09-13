@@ -18,8 +18,13 @@ const TrophyComponent = ({ trophy }: { trophy: Trophy }) => {
       <Text>{trophy.description}</Text>
       <Text>{trophy.points}</Text>
       <Image
-        source={{ uri: trophy.icon }}
-        style={{ width: 50, height: 50 }}
+        source={trophy.icon}
+        transition={1000}
+        style={{
+          height: 50,
+          width: 50,
+          flex: 1,
+        }}
         onError={() => console.log('Error loading image')}
       />
     </View>
